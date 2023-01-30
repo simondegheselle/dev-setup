@@ -1,0 +1,26 @@
+- name: Bootstrap development environment
+  hosts: localhost
+  vars:
+    home: ansible_env.home
+  # roles:
+  #   - role: pyenv
+  tasks:
+    - name: Install packages with apt
+      become: yes
+      ansible.builtin.apt:
+        name:
+          - git
+          - tmux
+          - neovim
+        state: present
+    - name: Install astrovim
+      ansible.builtin.git:
+        repo: https://github.com/AstroNvim/AstroNvim
+        dest: ~/.config/nvim
+        force: true
+    - name: Oh my TMUX clone 
+      git: 
+        repo: https://github.com/gpakosz/.tmux.git 
+        dest: ~/tmux
+    - name: Link Oh my tmux 
+      shell: ln -s -f ~/tmux/.tmux.conf ~/.tmux.conf
